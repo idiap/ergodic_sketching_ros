@@ -1,0 +1,23 @@
+<!--
+SPDX-FileCopyrightText: 2023 Idiap Research Institute <contact@idiap.ch>
+
+SPDX-FileContributor: Jeremy Maceiras  <jeremy.maceiras@idiap.ch>
+SPDX-FileContributor: Tobias Loew <tobias.loew@idiap.ch
+
+SPDX-License-Identifier: GPL-3.0-only
+-->
+
+<package format="2">
+  <name>ergodic_sketching</name>
+  <version>0.0.1</version>
+  <description>ergodic_sketching package</description>
+  <maintainer email="tobias.loew@idiap.ch">Tobias Löw</maintainer>
+  <author email="tobias.loew@idiap.ch">Tobias Löw</author>
+
+  <license>GPLv3</license>
+
+  <export>
+    <build_type>cmake</build_type>
+  </export>
+
+</package>

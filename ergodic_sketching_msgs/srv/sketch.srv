@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2023 Idiap Research Institute <contact@idiap.ch>
+#
+# SPDX-FileContributor: Jeremy Maceiras  <jeremy.maceiras@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+sensor_msgs/Image image
+std_msgs/UInt8 drawing_zone_idx
+---
+nav_msgs/Path path

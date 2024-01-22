@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: 2023 Idiap Research Institute <contact@idiap.ch>
+#
+# SPDX-FileContributor: Jeremy Maceiras  <jeremy.maceiras@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+base_frame: LIO_robot_base_link
+tip_frame: pen_link
+joint_names: [lio_joint1,lio_joint2,lio_joint3,lio_joint4,lio_joint5,lio_joint6]
+dof: 6
+order: 2
+rfactor: 0.0000001
+init_phase_length: 500
+q_max: [2.959, 1.909, 1.89, 2.959, 1.89, 2.959]
+q_min: [-2.959, -1.909, -1.89, -2.959, -1.89, -2.959]
+dq_max: [0.819, 0.819, 0.819,0.819, 0.819, 1.649]
+dq_min: [-0.819, -0.819, -0.819,-0.819, -0.819, -1.649]
+q0: [0.0018384558536111597, -0.3892422215615018, 0.9303775718281398, -0.0040393209935760946, 1.790697023364971, 0.00024579553542674205]
+orn_thresh: [0,1.5,0]

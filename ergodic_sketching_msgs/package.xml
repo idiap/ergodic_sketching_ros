@@ -1,0 +1,26 @@
+<!--
+SPDX-FileCopyrightText: 2023 Idiap Research Institute <contact@idiap.ch>
+
+SPDX-FileContributor: Jeremy Maceiras  <jeremy.maceiras@idiap.ch>
+
+SPDX-License-Identifier: GPL-3.0-only
+-->
+
+<package format="2">
+    <name>ergodic_sketching_msgs</name>
+    <version>0.0.1</version>
+    <description>etgodic_sketching_ros package</description>
+    <maintainer email="jeremy.maceiras@idiap.ch">Jérémy Maceiras</maintainer>
+    <license>GPLv3</license>
+    <buildtool_depend>catkin</buildtool_depend>
+    <build_depend>message_generation</build_depend>
+    <exec_depend>message_runtime</exec_depend>
+    <depend>roscpp</depend>
+    <depend>nav_msgs</depend>
+    <depend>sensor_msgs</depend>
+    <depend>std_msgs</depend>
+    <depend>geometry_msgs</depend>
+    <depend>actionlib</depend>
+    <depend>actionlib_msgs</depend>
+    <depend>trajectory_msgs</depend>
+</package>

@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: 2023 Idiap Research Institute <contact@idiap.ch>
+#
+# SPDX-FileContributor: Jeremy Maceiras  <jeremy.maceiras@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+base_frame: world  # base frame
+tip_frame: pen_link # End-effector ling
+joint_names: [p_rob_joint1,p_rob_joint2,p_rob_joint3,p_rob_joint4,p_rob_joint5,p_rob_joint6]
+dof: 6
+order: 2 # Optimization order: 1 or 2.
+rfactor: 0.0000001 # Regularization term
+init_phase_length: 500 # Duration of the init phase in timesteps
+q_max: [2.959, 1.909, 1.89, 2.959, 1.89, 2.959] # Max joint positions
+q_min: [-2.959, -1.909, -1.89, -2.959, -1.89, -2.959] # Min joint positions
+dq_max: [0.819, 0.819, 0.819,0.819, 0.819, 1.649] # Max joint velocities
+dq_min: [-0.819, -0.819, -0.819,-0.819, -0.819, -1.649] # Min joint velocities
+q0: [0.0, -0.3064100034801245, 1.1103435635337524, 0.0, 1.259673934334387, 0.0] # Initial joint configuration
+orn_thresh: [1.5, 1.5, 1.5] # Do not touch this

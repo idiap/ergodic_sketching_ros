@@ -1,0 +1,16 @@
+<!--
+SPDX-FileCopyrightText: 2023 Idiap Research Institute <contact@idiap.ch>
+
+SPDX-FileContributor: Jeremy Maceiras  <jeremy.maceiras@idiap.ch>
+
+SPDX-License-Identifier: GPL-3.0-only
+-->
+<launch>
+    <arg name="cwd" default="."/>
+    <arg name="config_file" default="drozbot_config.yaml"/>
+
+    <node pkg="ergodic_sketching_ros" type="ergodic_sketching_ros" name="ergodic_sketching_ros" output="screen">
+        <param name="path" value="$(arg cwd)"/>
+        <param name="config_file" value="$(arg config_file)"/>
+    </node>
+</launch>

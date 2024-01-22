@@ -1,0 +1,22 @@
+<!--
+SPDX-FileCopyrightText: 2023 Idiap Research Institute <contact@idiap.ch>
+
+SPDX-FileContributor: Tobias Loew <tobias.loew@idiap.ch
+
+SPDX-License-Identifier: GPL-3.0-only
+-->
+
+<package format="2">
+  <name>sackmesser</name>
+  <version>0.0.0</version>
+  <description>The sackmesser package</description>
+
+  <maintainer email="tobias.loew@alumni.ethz.ch">Tobi Löw</maintainer>
+  <author email="tobias.loew@alumni.ethz.ch">Tobi Löw</author>
+
+  <license>TODO</license>
+
+  <export>
+    <build_type>cmake</build_type>
+  </export>
+</package>
