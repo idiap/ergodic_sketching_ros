@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<robot name="iiwa7" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <material name="grey">
+    <color rgba="0.85 0.85 0.85 0.5"/>
+  </material>
+  <!-- Import Rviz colors -->
+  <xacro:include filename="$(find iiwa_description)/urdf/materials.xacro" />
+  <!--Import the lbr iiwa macro -->
+  <xacro:include filename="$(find iiwa_description)/urdf/iiwa7.xacro"/>
+  
+  <xacro:arg name="hardware_interface" default="PositionJointInterface"/>
+  <xacro:arg name="robot_name" default="iiwa"/>
+  <xacro:arg name="origin_xyz" default="0 0 0"/>
+  <xacro:arg name="origin_rpy" default="0 0 0"/>
+  
+  <!-- Fix to world just for testing -->
+  <link name="world"/>
+  
+  <!--iiwa-->
+  <xacro:iiwa7 hardware_interface="$(arg hardware_interface)" robot_name="$(arg robot_name)" parent="world">
+    <origin xyz="$(arg origin_xyz)" rpy="$(arg origin_rpy)" />
+  </xacro:iiwa7>
+  
+  <link name="pen_link">
+  </link>
+
+  <joint name="pen_joint" type="fixed">
+    <origin rpy="0 1.5708 0" xyz="0.15 0 0.12"/>
+    <parent link="iiwa_link_ee"/>
+    <child link="pen_link"/>
+  </joint>
+
+  <link name="drawing_frame_link">
+    <visual>
+      <geometry>
+        <mesh
+          filename="package://ergodic_sketching_ros/descriptions/meshes/drawing_paper.stl"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+  </link>
+
+  <joint name="drawing_frame_joint" type="fixed">
+    <parent link="iiwa_link_0"/>
+    <child link="drawing_frame_link"/>
+
+    <origin rpy="$(arg drawing_frame_rpy)" xyz="$(arg drawing_frame_xyz)"/>
+  </joint>
+</robot>

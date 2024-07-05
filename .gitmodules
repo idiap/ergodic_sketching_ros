@@ -1,3 +1,3 @@
-[submodule "ilqr_planner"]
-	path = ilqr_planner
-	url = https://github.com/idiap/ilqr_planner.git
+[submodule "ergodic_sketching"]
+	path = ergodic_sketching
+	url = git@gitlab.idiap.ch:jmaceiras/ergodic_sketching.git

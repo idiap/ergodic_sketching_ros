@@ -1,0 +1,58 @@
+<!--
+SPDX-FileCopyrightText: 2023 Idiap Research Institute <contact@idiap.ch>
+
+SPDX-FileContributor: Jeremy Maceiras  <jeremy.maceiras@idiap.ch>
+
+SPDX-License-Identifier: GPL-3.0-only
+-->
+
+<launch>
+    <arg name="cwd" default="$(find ergodic_sketching)"/>
+    <arg name="config_file" default="drozbot_config_iiwa.yaml"/>
+    <arg name="base_frame" default="iiwa_link_0"/>
+    <arg name="gui" default="true"/>
+    <arg name="ik" default="true"/>
+    <arg name="drawing_frame_xyz" default="0.6 0.15 0.2"/>
+    <arg name="drawing_frame_rpy" default="0 0 -1.5708"/>
+
+    <param name="robot_description" command="$(find xacro)/xacro '$(find ergodic_sketching_ros)/descriptions/iiwa_drawing.urdf.xacro' drawing_frame_xyz:='$(arg drawing_frame_xyz)' drawing_frame_rpy:='$(arg drawing_frame_rpy)'" />
+    <param name="drawing_frame_xyz" value="$(arg drawing_frame_xyz)"/>
+    <param name="drawing_frame_rpy" value="$(arg drawing_frame_rpy)"/>
+
+    <node pkg="ergodic_sketching_ros" type="ergodic_sketching_ros" name="ergodic_sketching_ros" output="screen">
+        <param name="path" value="$(arg cwd)"/>
+        <param name="config_file" value="$(arg config_file)"/>
+        <param name="base_frame" value="$(arg base_frame)" />
+    </node>
+
+    <node pkg="ergodic_sketching_ros" type="ilqr_planner_ros" name="ilqr_planner_ros" output="screen">
+        <rosparam command="load" subst_value="True" file="$(find ergodic_sketching_ros)/config/ilqr_planner_config_iiwa.yaml" />
+    </node>
+
+    <group if="$(arg gui)">
+        <node pkg="rviz" type="rviz" output="screen" name="rviz" args="-d $(find ergodic_sketching_ros)/rviz/config.rviz -f iiwa_link_0"/>
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen"/>
+        <!--<node name="joint_state_publisher_gui" type="joint_state_publisher_gui" pkg="joint_state_publisher_gui" output="screen"/>-->
+        <node name="joint_state_publisher_gui" type="joint_state_publisher_gui" pkg="joint_state_publisher_gui" output="screen">
+            <rosparam param="source_list">[rob_sim/joint_states] </rosparam>
+        </node>
+    </group>
+
+    <group unless="$(arg gui)">
+        <node name="joint_state_publisher" type="joint_state_publisher" pkg="joint_state_publisher" output="screen">
+            <rosparam param="source_list">[rob_sim/joint_states] </rosparam>
+        </node>
+    </group>
+
+    <group if="$(arg ik)">
+        <node pkg="ergodic_sketching_ros" type="ik_node.py" name="ik_node" output="screen">
+                <rosparam command="load" subst_value="True" file="$(find ergodic_sketching_ros)/config/ilqr_planner_config_iiwa.yaml" />
+                <remap from="/ik_node/joint_states" to="/joint_states"/>
+                <remap from="/ik_node/new_joint_states" to="/rob_sim/joint_states"/>
+                <remap from="/ik_node/target_pose" to="/ik_marker/marker_ik_pose"/>
+        </node>
+        <node pkg="ergodic_sketching_ros" type="ik_marker_node.py" name="ik_marker" output="screen">
+        </node>
+    </group>
+
+</launch>

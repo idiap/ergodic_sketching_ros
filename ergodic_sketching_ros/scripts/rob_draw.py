@@ -135,11 +135,11 @@ def drozbot()->None:
 
     publish_joint_state = None
     if not args.no_publish:
-        joint_states_pub = rospy.Publisher("prob_sim/joint_states",JointState,queue_size=10)
+        joint_states_pub = rospy.Publisher("rob_sim/joint_states",JointState,queue_size=10)
         joint_names = rospy.get_param("/ilqr_planner_ros/joint_names")
         publish_joint_state = partial(_publish_joint_state,joint_states_pub,joint_names)
 
-    path_pub = rospy.Publisher("prob_sim/path",Path,queue_size=10)
+    path_pub = rospy.Publisher("rob_sim/path",Path,queue_size=10)
 
     sketch_srv = rospy.ServiceProxy("/ergodic_sketching_ros/sketch",ergodic_sketching_msgs.srv.sketch)
 

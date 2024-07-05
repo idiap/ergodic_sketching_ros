@@ -131,7 +131,7 @@ int main(int argc, char** argv) {
 
     config.nb_ctrl_var = config.dof;
     config.nb_state_var = 7;
-    config.nb_iter = 100;
+    config.nb_iter = 25;
     config.dt = 0.01;
     config.batch_size = 7500;
 

@@ -11,6 +11,7 @@
 
 #include <cv_bridge/cv_bridge.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <nav_msgs/Path.h>
 #include <ros/ros.h>
 
 #include <sackmesser/ConfigurationServer.hpp>
@@ -39,6 +40,21 @@ bool sketch(ergodic_sketching_msgs::sketch::Request& req, ergodic_sketching_msgs
 
     std::vector<sketching::ErgodicControl::Agent::Path> paths = ergodic_sketcher->sketch(image_ptr->image);
     std::vector<Eigen::Matrix<double, 7, 1>> path_7d = robot_drawing->process(paths, robot_drawing->getDrawingZonesTransforms()[req.drawing_zone_idx.data]);
+    
+    for(auto const& stroke : paths){
+        nav_msgs::Path stroke_ros;
+        stroke_ros.header.stamp = ros::Time::now();
+
+        for(auto const& point: stroke){
+            geometry_msgs::PoseStamped point_ros;
+            point_ros.header.stamp = ros::Time::now();
+            point_ros.pose.position.x = point(0);
+            point_ros.pose.position.y = point(1);
+            stroke_ros.poses.push_back(point_ros);
+        }
+
+        resp.strokes.push_back(stroke_ros);
+    }
 
     resp.path.header.stamp = ros::Time::now();
     resp.path.header.frame_id = base_frame;

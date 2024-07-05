@@ -62,123 +62,53 @@ Visualization Manager:
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
-        LIO_base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        LIO_robot_base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
         Link Tree Style: Links in Alphabetic Order
-        base_footprint:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        caster_left_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        caster_left_wheel:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        caster_right_base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        caster_right_wheel:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         drawing_frame_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        fisheye_base_link_mount:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        fisheye_fisheye_base_housing_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        lidar_back:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        lidar_back_helper:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        lidar_front:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        lidar_front_helper:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        lio_back_cover:
+        iiwa_link_0:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        lio_gripper_interface_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        lio_gripper_link:
+        iiwa_link_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        lio_left_finger:
+        iiwa_link_2:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        lio_link12:
+        iiwa_link_3:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        lio_link23:
+        iiwa_link_4:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        lio_link34:
+        iiwa_link_5:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        lio_link45:
+        iiwa_link_6:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        lio_link56:
+        iiwa_link_7:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        lio_link6G:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lio_right_finger:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        lio_tcp_link:
+        iiwa_link_ee:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -186,39 +116,10 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        platform_base_link:
+        world:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
-        rgbd_down_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rgbd_up_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        wheel_actuated_left:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        wheel_actuated_left_visualizer:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        wheel_actuated_right:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        wheel_actuated_right_visualizer:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""
@@ -230,73 +131,29 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        LIO_base_link:
-          Value: false
-        LIO_robot_base_link:
-          Value: false
-        base_footprint:
-          Value: false
-        caster_left_base:
-          Value: false
-        caster_left_wheel:
-          Value: false
-        caster_right_base:
-          Value: false
-        caster_right_wheel:
-          Value: false
         drawing_frame_link:
           Value: true
-        fisheye_base_link_mount:
+        iiwa_link_0:
           Value: false
-        fisheye_fisheye_base_housing_frame:
+        iiwa_link_1:
           Value: false
-        lidar_back:
+        iiwa_link_2:
           Value: false
-        lidar_back_helper:
+        iiwa_link_3:
           Value: false
-        lidar_front:
+        iiwa_link_4:
           Value: false
-        lidar_front_helper:
+        iiwa_link_5:
           Value: false
-        lio_back_cover:
+        iiwa_link_6:
           Value: false
-        lio_gripper_interface_link:
+        iiwa_link_7:
           Value: false
-        lio_gripper_link:
-          Value: false
-        lio_left_finger:
-          Value: false
-        lio_link12:
-          Value: false
-        lio_link23:
-          Value: false
-        lio_link34:
-          Value: false
-        lio_link45:
-          Value: false
-        lio_link56:
-          Value: false
-        lio_link6G:
-          Value: false
-        lio_right_finger:
-          Value: false
-        lio_tcp_link:
+        iiwa_link_ee:
           Value: false
         pen_link:
           Value: true
-        platform_base_link:
-          Value: false
-        rgbd_down_link:
-          Value: false
-        rgbd_up_link:
-          Value: false
-        wheel_actuated_left:
-          Value: false
-        wheel_actuated_left_visualizer:
-          Value: false
-        wheel_actuated_right:
-          Value: false
-        wheel_actuated_right_visualizer:
+        world:
           Value: false
       Marker Alpha: 1
       Marker Scale: 1
@@ -305,56 +162,20 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        base_footprint:
-          caster_left_base:
-            caster_left_wheel:
+        world:
+          iiwa_link_0:
+            drawing_frame_link:
               {}
-          caster_right_base:
-            caster_right_wheel:
-              {}
-          lidar_back:
-            {}
-          lidar_back_helper:
-            {}
-          lidar_front:
-            {}
-          lidar_front_helper:
-            {}
-          platform_base_link:
-            LIO_base_link:
-              LIO_robot_base_link:
-                drawing_frame_link:
-                  {}
-                lio_link12:
-                  lio_link23:
-                    lio_link34:
-                      lio_link45:
-                        lio_link56:
-                          lio_link6G:
-                            lio_gripper_interface_link:
-                              lio_back_cover:
-                                {}
-                              lio_gripper_link:
-                                lio_left_finger:
-                                  {}
-                                lio_right_finger:
-                                  {}
-                                lio_tcp_link:
-                                  pen_link:
-                                    {}
-              fisheye_fisheye_base_housing_frame:
-                fisheye_base_link_mount:
-                  {}
-              rgbd_down_link:
-                {}
-              rgbd_up_link:
-                {}
-          wheel_actuated_left:
-            wheel_actuated_left_visualizer:
-              {}
-          wheel_actuated_right:
-            wheel_actuated_right_visualizer:
-              {}
+            iiwa_link_1:
+              iiwa_link_2:
+                iiwa_link_3:
+                  iiwa_link_4:
+                    iiwa_link_5:
+                      iiwa_link_6:
+                        iiwa_link_7:
+                          iiwa_link_ee:
+                            pen_link:
+                              {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -378,7 +199,7 @@ Visualization Manager:
       Radius: 0.029999999329447746
       Shaft Diameter: 0.10000000149011612
       Shaft Length: 0.10000000149011612
-      Topic: /prob_sim/path
+      Topic: /rob_sim/path
       Unreliable: false
       Value: true
     - Class: rviz/InteractiveMarkers
@@ -394,7 +215,7 @@ Visualization Manager:
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: LIO_base_link
+    Fixed Frame: iiwa_link_0
     Frame Rate: 30
   Name: root
   Tools:
@@ -434,9 +255,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.8503979444503784
+      Pitch: 0.6103981137275696
       Target Frame: <Fixed Frame>
-      Yaw: 0.3690315783023834
+      Yaw: 5.842214107513428
     Saved: ~
 Window Geometry:
   Displays:

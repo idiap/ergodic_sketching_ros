@@ -5,13 +5,13 @@ This repository contains the source code to run the drozBot portraitist robot ov
 * [``ergodic_sketching``](./ergodic_sketching/), the core C++ library.
 * [``ergodic_sketching_msgs``](./ergodic_sketching_msgs/), the definition of custom ROS messages, services, and actions.
 * [``ergodic_sketching_ros``](./ergodic_sketching_ros/), the ROS interface of the ``ergodic_sketching_library``.
-* [``ilqr_planner``](https://github.com/idiap/ilqr_planner), a library to optimize trajectory using iLQR. This library is added as a submodule.
 
 ## Installation
 
 * Clone this repository inside your catkin workspace.
   * Initialize the submodules.
 * Add in your catkin workspace the packages dependencies:
+  * [``ilqr_planner``](https://github.com/idiap/ilqr_planner), a library to optimize trajectory using iLQR.
   * [``fp_description``](), the package containing description of the F&P Robotics robots. The package is provided by F&P directly.
 * Build the workspace with ``catkin build``.
   
@@ -22,7 +22,7 @@ This repository contains the source code to run the drozBot portraitist robot ov
 You can setup the pipeline for PRob robot with:
 
 ```bash
-$ roslaunch ergodic_sketching_ros prob_sim.launch gui:=true 
+$ roslaunch ergodic_sketching_ros rob_sim.launch gui:=true 
 ```
 
 The ``gui`` argument indicated wheter we want to use RVIZ or not.
@@ -38,7 +38,7 @@ A python script as been implemented to facilitate the use of the pipeline. See b
 
 ### Python script
 
-The script [``prob_draw.py``](./ergodic_sketching_ros/scripts/prob_draw.py) automatize the call to ``/ergodic_sketching_ros/sketch`` and ``/ilqr_planner_ros/plan`` and take the path to an image as input. It publishes the joint states to the ``prob_sim/joint_states`` topic:
+The script [``prob_draw.py``](./ergodic_sketching_ros/scripts/prob_draw.py) automatize the call to ``/ergodic_sketching_ros/sketch`` and ``/ilqr_planner_ros/plan`` and take the path to an image as input. It publishes the joint states to the ``rob_sim/joint_states`` topic:
 
 ```bash
 $ python prob_draw.py -l <path_to_log_dir>  -i <path_to_image>
@@ -63,5 +63,5 @@ Standard image formats are working with this script. The recommended image resol
 Position of the drawing frame can be specified as argument with the roslaunch command:
 
 ```bash
-$ roslaunch ergodic_sketching_ros prob_sim.launch gui:=true drawing_frame_xyz:=<position> drawing_frame_rpy:=<orientation>
+$ roslaunch ergodic_sketching_ros rob_sim.launch gui:=true drawing_frame_xyz:=<position> drawing_frame_rpy:=<orientation>
 ```

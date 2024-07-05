@@ -19,7 +19,7 @@ class IkSolver:
 
     def __init__(self, urdf_path: pathlib.Path, base_frame: str, tip_frame: str, q_max: numpy.ndarray, q_min: numpy.ndarray, dof: int) -> None:
 
-        self._robot = KDLRobot(urdf_path,base_frame,tip_frame,[0]*dof,[0]*dof)
+        self._robot = KDLRobot(urdf_path,base_frame,tip_frame,[0]*dof,[0]*dof,[0]*3,[0]*3,False)
         self._dof = dof
         self._q_max = q_max
         self._q_min = q_min
@@ -66,7 +66,7 @@ class IKManager:
         self._base_frame = rospy.get_param("~base_frame")
         self._tip_frame = rospy.get_param("~tip_frame")
         self._dof = rospy.get_param("~dof")
-        self._urdf_path = rospy.get_param("~urdf_path")
+        self._urdf_path = rospy.get_param("/robot_description")
         self._joint_names = rospy.get_param("~joint_names")
         self._q_max = rospy.get_param("~q_max")
         self._q_min = rospy.get_param("~q_min")

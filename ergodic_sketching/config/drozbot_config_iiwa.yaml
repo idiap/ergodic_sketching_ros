@@ -1,0 +1,95 @@
+# SPDX-FileCopyrightText: 2023 Idiap Research Institute <contact@idiap.ch>
+#
+# SPDX-FileContributor: Jeremy Maceiras  <jeremy.maceiras@idiap.ch>
+# SPDX-FileContributor: Tobias Loew <tobias.loew@idiap.ch
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+input_folder: assets
+export_intermediary_result: false
+apply_signature: true
+input: intelliman.jpg
+timeout_duration: 5
+
+drawing_time_limit: 22
+
+
+display:
+    width: 1920
+    height: 1080
+    font_file: DINPro-Medium.otf
+
+camera:
+    image_height: 1080
+    image_width: 867
+    camera_index: 0
+    cv_rotate: 1
+    filter_horizon: 10
+    rectangle_width: 289
+    rectangle_height: 45
+    fps: 30
+
+ergodic_sketching:
+    save_trajectories: false
+    render_image: true
+    show_points: false
+    robot_drawing:
+        signature_width_ratio: 0.3
+        dt: 0.01
+        sheet_x_size: 0.28
+        sheet_y_size: 0.4
+        sheet_margin_x: 0.02
+        sheet_margin_y: 0.025
+        init_phase_length: 600
+        max_cart_vel: 0.035
+        offset: 0.015
+
+        num_drawing_zone: 1
+
+        drawing_zone_1:
+            drawing_orientation:
+                w: 0.0085
+                x: 0
+                y: 0.999
+                z: 0
+
+    pipelines:
+        - inner
+
+    inner:
+        num_strokes: 70
+        image_processing:
+            processors:
+                - histogram_normalization
+                - contrast_brightness_enhancement
+                - preprocessor
+            preprocessor:
+                invert_image: true
+                threshold: 0
+                image_size: 500
+            contrast_brightness_enhancement:
+                alpha: 2.25
+                beta: 0
+            geometric_warping:
+                hourglass:
+                    left_scale: 0.1
+                    right_scale: 0.7
+                    stretch: 1.0
+                diamond:
+                    indent: 0.15
+
+        hedac:
+            agent_type: second_order
+            initialization_method: gibbs_sampling
+            num_agents: 50
+            diffusion: 1.0
+            local_cooling: 0.01
+            timesteps: 15
+            domain_size: 100.0
+            step_size: 0.2
+            cooling_radius: 1.0
+            agent_radius: 1.0
+            source_strength: 1.0
+            agent:
+                max_velocity: 0.4
+                max_acceleration: 0.2

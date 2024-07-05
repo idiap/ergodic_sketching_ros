@@ -7,3 +7,4 @@ sensor_msgs/Image image
 std_msgs/UInt8 drawing_zone_idx
 ---
 nav_msgs/Path path
+nav_msgs/Path[] strokes

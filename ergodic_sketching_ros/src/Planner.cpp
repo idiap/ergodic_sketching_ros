@@ -14,7 +14,7 @@
 
 Planner::Planner(const Configuration& config) {
     config_ = config;
-    sim_.reset(new ilqr_planner::sim::KDLRobot(config_.urdf, config_.base_frame, config_.tip_frame, config_.q0, config_.dq0, Eigen::VectorXd::Zero(3), Eigen::Vector3d::Zero(),false));
+    sim_.reset(new ilqr_planner::sim::KDLRobot(config_.urdf, config_.base_frame, config_.tip_frame, config_.q0, config_.dq0, Eigen::VectorXd::Zero(3), Eigen::Vector3d::Zero(3),false));
 }
 
 Planner::~Planner() {}

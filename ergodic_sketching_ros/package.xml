@@ -22,5 +22,4 @@ SPDX-License-Identifier: GPL-3.0-only
     <depend>actionlib</depend>
     <depend>actionlib_msgs</depend>
     <depend>ergodic_sketching_msgs</depend>
-    <depend>p_rob_description</depend>
 </package>
