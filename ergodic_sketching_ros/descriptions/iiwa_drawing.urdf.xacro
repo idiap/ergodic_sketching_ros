@@ -1,4 +1,11 @@
 <?xml version="1.0"?>
+<!--
+SPDX-FileCopyrightText: 2023 Idiap Research Institute <contact@idiap.ch>
+
+SPDX-FileContributor: Jeremy Maceiras  <jeremy.maceiras@idiap.ch>
+
+SPDX-License-Identifier: GPL-3.0-only
+-->
 <robot name="iiwa7" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <material name="grey">
     <color rgba="0.85 0.85 0.85 0.5"/>

@@ -1,3 +1,11 @@
+<!--
+SPDX-FileCopyrightText: 2023 Idiap Research Institute <contact@idiap.ch>
+
+SPDX-FileContributor: Jeremy Maceiras  <jeremy.maceiras@idiap.ch>
+
+SPDX-License-Identifier: GPL-3.0-only
+-->
+
 # ergodic_sketching_ros
 
 This repository contains the source code to run the drozBot portraitist robot over ROS1. It contains 3 different packages:

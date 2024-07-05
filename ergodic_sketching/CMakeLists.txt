@@ -33,7 +33,6 @@ find_package(OpenCV REQUIRED)
 set(LIB_SRCS
     src/AgentInitialization.cpp
     src/Camera.cpp
-    src/Display.cpp
     src/ErgodicAgent.cpp
     src/ErgodicControl.cpp
     src/ErgodicSketching.cpp
@@ -58,7 +57,6 @@ set(LIB_HEADERS
     include/ergodic_sketching/Camera.hpp
     include/ergodic_sketching/CameraConfiguration.hpp
     include/ergodic_sketching/Configuration.hpp
-    include/ergodic_sketching/Display.hpp
     include/ergodic_sketching/ErgodicAgent.hpp
     include/ergodic_sketching/ErgodicControl.hpp
     include/ergodic_sketching/ErgodicSketching.hpp
