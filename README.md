@@ -14,13 +14,15 @@ This repository contains the source code to run the drozBot portraitist robot ov
 * [``ergodic_sketching_msgs``](./ergodic_sketching_msgs/), the definition of custom ROS messages, services, and actions.
 * [``ergodic_sketching_ros``](./ergodic_sketching_ros/), the ROS interface of the ``ergodic_sketching_library``.
 
+The package also provides the following submodules: 
+
+  * [``ilqr_planner``](https://github.com/idiap/ilqr_planner), a library to optimize trajectory using iLQR.
+  * [``iiwa_description``](https://github.com/kuka-isir/iiwa_description), the package containing description of the KUKA iiwa LWR robot. The package is available on github with a BSD license.
+  
 ## Installation
 
 * Clone this repository inside your catkin workspace.
-  * Initialize the submodules.
-* Add in your catkin workspace the packages dependencies:
-  * [``ilqr_planner``](https://github.com/idiap/ilqr_planner), a library to optimize trajectory using iLQR.
-  * [``fp_description``](), the package containing description of the F&P Robotics robots. The package is provided by F&P directly.
+  * Initialize the submodules: `git submodule update --init --recursive`
 * Build the workspace with ``catkin build``.
   
 ## Usage 
@@ -54,16 +56,18 @@ $ python prob_draw.py -l <path_to_log_dir>  -i <path_to_image>
 
 ``<path_to_log_dir>`` is a path to save the log of the sketching. It saves the joint positions, velocities, and optimization cost for investigation.
 
+A test image is available in the `images` folder.
+
 Standard image formats are working with this script. The recommended image resolution is 950x650 (HxW). Other resolution might distort the drawing or make the computation slower.
 
 ## Parameters
 
-* Sketching parameters can be found [here](ergodic_sketching/config/drozbot_config_prob.yaml), here are the most common parameters:
+* Sketching parameters can be found [here](ergodic_sketching/config/drozbot_config_iiwa.yaml), here are the most common parameters:
   * ``num_strokes``: the number of strokes per sketch.
   * ``num_agents``: the number of exploring agent for the ergodic exploration.
   * ``timesteps``: the path size explored by one agent.
   * ``drawing_orientation``: the end-effector orientation while drawing.
-* Planner parameters can be found [here](ergodic_sketching_ros/config/ilqr_planner_config_prob.yaml):
+* Planner parameters can be found [here](ergodic_sketching_ros/config/ilqr_planner_config_iiwa.yaml):
   * ``q0``: initial joint configuration of the robot. The end-effector orientation should match ``drawing_orientation``.
 
 ## Arguments
