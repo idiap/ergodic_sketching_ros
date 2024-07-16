@@ -29,7 +29,7 @@ The package also provides the following submodules:
 
 ### Launch file
 
-You can setup the pipeline for PRob robot with:
+You can setup the pipeline for the kuka robot with:
 
 ```bash
 $ roslaunch ergodic_sketching_ros rob_sim.launch gui:=true 
@@ -48,15 +48,17 @@ A python script as been implemented to facilitate the use of the pipeline. See b
 
 ### Python script
 
-The script [``prob_draw.py``](./ergodic_sketching_ros/scripts/prob_draw.py) automatize the call to ``/ergodic_sketching_ros/sketch`` and ``/ilqr_planner_ros/plan`` and take the path to an image as input. It publishes the joint states to the ``rob_sim/joint_states`` topic:
+The script [``rob_draw.py``](./ergodic_sketching_ros/scripts/rob_draw.py) automatize the call to ``/ergodic_sketching_ros/sketch`` and ``/ilqr_planner_ros/plan`` and take the path to an image as input. It publishes the joint states to the ``rob_sim/joint_states`` topic:
 
 ```bash
-$ python prob_draw.py -l <path_to_log_dir>  -i <path_to_image>
+$ python rob_draw.py -l <path_to_log_dir>  -i <path_to_image>
 ```
 
 ``<path_to_log_dir>`` is a path to save the log of the sketching. It saves the joint positions, velocities, and optimization cost for investigation.
 
 A test image is available in the `images` folder.
+
+When this script is used with the launch file described previously, it will automatically display all the results on RVIZ.
 
 Standard image formats are working with this script. The recommended image resolution is 950x650 (HxW). Other resolution might distort the drawing or make the computation slower.
 
