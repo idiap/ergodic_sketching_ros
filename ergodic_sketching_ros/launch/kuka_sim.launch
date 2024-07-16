@@ -11,7 +11,7 @@ SPDX-License-Identifier: GPL-3.0-only
     <arg name="config_file" default="drozbot_config_iiwa.yaml"/>
     <arg name="base_frame" default="iiwa_link_0"/>
     <arg name="gui" default="true"/>
-    <arg name="ik" default="true"/>
+    <arg name="ik" default="false"/>
     <arg name="drawing_frame_xyz" default="0.6 0.15 0.2"/>
     <arg name="drawing_frame_rpy" default="0 0 -1.5708"/>
 

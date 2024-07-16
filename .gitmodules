@@ -1,3 +1,6 @@
 [submodule "ilqr_planner"]
 	path = ilqr_planner
 	url = https://github.com/idiap/ilqr_planner.git
+[submodule "iiwa_description"]
+	path = iiwa_description
+	url = https://github.com/kuka-isir/iiwa_description.git

@@ -17,9 +17,14 @@ SPDX-License-Identifier: GPL-3.0-only
     <depend>roscpp</depend>
     <depend>rospy</depend>
     <depend>ergodic_sketching</depend>
+    <depend>xacro</depend>
     <depend>ilqr_planner</depend>
     <depend>cv_bridge</depend>
     <depend>actionlib</depend>
     <depend>actionlib_msgs</depend>
     <depend>ergodic_sketching_msgs</depend>
+    <depend>rviz</depend>
+    <depend>joint_state_publisher</depend>
+    <depend>joint_state_publisher_gui</depend>
+    <depend>robot_state_publisher</depend>
 </package>

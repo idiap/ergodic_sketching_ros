@@ -18,3 +18,7 @@ License: GPL-3.0-only
 Files: ergodic_sketching/assets/writing/*
 Copyright: Copyright © 2023 Idiap Research Institute <contact@idiap.ch>
 License: GPL-3.0-only
+
+Files: images/*
+Copyright: Copyright © 2023 Idiap Research Institute <contact@idiap.ch>
+License: GPL-3.0-only
