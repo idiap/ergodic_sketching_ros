@@ -3,17 +3,18 @@
 # SPDX-FileContributor: Jeremy Maceiras  <jeremy.maceiras@idiap.ch>
 #
 # SPDX-License-Identifier: GPL-3.0-only
-
-base_frame: iiwa_link_0
-tip_frame: pen_link
-joint_names: [iiwa_joint_1,iiwa_joint_2,iiwa_joint_3,iiwa_joint_4,iiwa_joint_5,iiwa_joint_6,iiwa_joint_7]
-dof: 7
-order: 2
-rfactor: 0.0000001 # Regularization term
-init_phase_length: 500
-q_max: [2.96,2.09,2.96,2.09,2.96,2.9,3]
-q_min: [-2.96,-2.09,-2.96,-2.09,-2.96,-2.9,-3]
-dq_max: [10,10,10,10,10,10,10]
-dq_min: [-10,-10,-10,-10,-10,-10,-10]
-q0: [-0.00022736247306932554, 0.8664540857974309, 0.00028482231544552826, -1.8003878456068543, -5.217328867227108e-05, -1.1130852533648445, -0.00019318246279565469]
-orn_thresh: [0,0.5,0]
+planner_action_server:
+  ros__parameters:
+    base_frame: "world"
+    tip_frame: "pen_link"
+    joint_names: ["iiwa_joint_a1", "iiwa_joint_a2", "iiwa_joint_a3", "iiwa_joint_a4", "iiwa_joint_a5", "iiwa_joint_a6", "iiwa_joint_a7"]
+    dof: 7
+    order: 2
+    rfactor: 0.0000001 # Regularization term
+    init_phase_length: 500
+    q_max: [2.96,2.09,2.96,2.09,2.96,2.9,3.0]
+    q_min: [-2.96,-2.09,-2.96,-2.09,-2.96,-2.9,-3.0]
+    dq_max: [10.0,10.0,10.0,10.0,10.0,10.0,10.0]
+    dq_min: [-10.0,-10.0,-10.0,-10.0,-10.0,-10.0,-10.0]
+    q0: [-0.00022736247306932554, 0.8664540857974309, 0.00028482231544552826, -1.8003878456068543, -5.217328867227108e-05, -1.1130852533648445, -0.00019318246279565469]
+    orn_thresh: [0.0,0.5,0.0]

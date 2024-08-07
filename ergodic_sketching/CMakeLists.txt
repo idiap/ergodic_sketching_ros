@@ -87,7 +87,7 @@ install(TARGETS ${PROJECT_NAME} # Install library
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
         RUNTIME DESTINATION bin
-        INCLUDES DESTINATION include/${PROJECT_NAME}
+        INCLUDES DESTINATION include
 )
 
 include(CMakePackageConfigHelpers) # Create this shit to be friendly with cmake guidelines

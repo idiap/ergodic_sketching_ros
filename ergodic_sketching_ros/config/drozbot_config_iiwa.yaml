@@ -57,7 +57,7 @@ ergodic_sketching:
         - inner
 
     inner:
-        num_strokes: 70
+        num_strokes: 5
         image_processing:
             processors:
                 - histogram_normalization

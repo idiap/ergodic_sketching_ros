@@ -6,6 +6,8 @@ SPDX-FileContributor: Jeremy Maceiras  <jeremy.maceiras@idiap.ch>
 SPDX-License-Identifier: GPL-3.0-only
 -->
 
+<span style="color:RED">*ROS2 Version!*</span>.
+
 # ergodic_sketching_ros
 
 This repository contains the source code to run the drozBot portraitist robot over ROS1. It contains 3 different packages:
@@ -17,13 +19,13 @@ This repository contains the source code to run the drozBot portraitist robot ov
 The package also provides the following submodules: 
 
   * [``ilqr_planner``](https://github.com/idiap/ilqr_planner), a library to optimize trajectory using iLQR.
-  * [``iiwa_description``](https://github.com/kuka-isir/iiwa_description), the package containing description of the KUKA iiwa LWR robot. The package is available on github with a BSD license.
+  * [``iiwa_ros2``](https://github.com/ICube-Robotics/iiwa_ros2), the package containing description of the KUKA iiwa LWR robot. The package is available on github with a BSD license.
   
 ## Installation
 
-* Clone this repository inside your catkin workspace.
+* Clone this repository inside the `src` folder of your colcon workspace.
   * Initialize the submodules: `git submodule update --init --recursive`
-* Build the workspace with ``catkin build``.
+* Build the workspace with ``colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release``.
   
 ## Usage 
 
@@ -32,26 +34,26 @@ The package also provides the following submodules:
 You can setup the pipeline for the kuka robot with:
 
 ```bash
-$ roslaunch ergodic_sketching_ros rob_sim.launch gui:=true 
+$ ros2 launch ergodic_sketching_ros iiwa_drawing.launch.py
 ```
 
-The ``gui`` argument indicated wheter we want to use RVIZ or not.
+The ``use_gui`` argument indicated wheter we want to use RVIZ or not.
 
 This launch file starts two ROS nodes:
 
 * ``/ergodic_sketching_ros`` a node responsible of the sketching part (transforming the image into a list of strokes). It advertises the following:
-  * a ``/ergodic_sketching_ros/sketch (ergodic_sketching_msgs/sketch)`` service responsible of performing the sketching.
-* ``/ilqr_planner_ros`` a node responsible of the planning part (transforming the task space strokes into joint states coordinates). It advertises the following:
-  * a ``/ilqr_planner_ros/plan`` action responsible of the planning. Since the list of strokes is quite big, the action break the planning into smaller part and return part of the joint state trajectory as feedback.
+  * a ``/sketch (ergodic_sketching_msgs/srv/Sketch)`` service responsible of performing the sketching.
+* ``/planner_action_server`` a node responsible of the planning part (transforming the task space strokes into joint states coordinates). It advertises the following:
+  * a ``/plan`` action responsible of the planning. Since the list of strokes is quite big, the action break the planning into smaller part and return part of the joint state trajectory as feedback.
 
 A python script as been implemented to facilitate the use of the pipeline. See below.
 
 ### Python script
 
-The script [``rob_draw.py``](./ergodic_sketching_ros/scripts/rob_draw.py) automatize the call to ``/ergodic_sketching_ros/sketch`` and ``/ilqr_planner_ros/plan`` and take the path to an image as input. It publishes the joint states to the ``rob_sim/joint_states`` topic:
+The script [``robot_sketch.py``](./ergodic_sketching_ros/scripts/robot_sketch.py) automatize the call to ``/sketch`` and ``/plan`` and take the path to an image as input. It publishes the joint states to the ``rob_sim/joint_states`` topic:
 
 ```bash
-$ python rob_draw.py -l <path_to_log_dir>  -i <path_to_image>
+$ python robot_sketch.py -l <path_to_log_dir>  -i <path_to_image>
 ```
 
 ``<path_to_log_dir>`` is a path to save the log of the sketching. It saves the joint positions, velocities, and optimization cost for investigation.
@@ -64,7 +66,7 @@ Standard image formats are working with this script. The recommended image resol
 
 ## Parameters
 
-* Sketching parameters can be found [here](ergodic_sketching/config/drozbot_config_iiwa.yaml), here are the most common parameters:
+* Sketching parameters can be found [here](ergodic_sketching_ros/config/drozbot_config_iiwa.yaml), here are the most common parameters:
   * ``num_strokes``: the number of strokes per sketch.
   * ``num_agents``: the number of exploring agent for the ergodic exploration.
   * ``timesteps``: the path size explored by one agent.
@@ -77,5 +79,5 @@ Standard image formats are working with this script. The recommended image resol
 Position of the drawing frame can be specified as argument with the roslaunch command:
 
 ```bash
-$ roslaunch ergodic_sketching_ros rob_sim.launch gui:=true drawing_frame_xyz:=<position> drawing_frame_rpy:=<orientation>
+$ ros2 launch ergodic_sketching_ros iiwa_drawing.launch.py use_gui:=true drawing_frame_xyz:=<position> drawing_frame_rpy:=<orientation>
 ```

@@ -7,49 +7,99 @@
 import os
 import pathlib
 import argparse
-from functools import partial
 from datetime import datetime
 
 import numpy
 import cv2
 import threading
 import queue
-import matplotlib.pyplot as plt
 
-import rospy
-import actionlib
-import ergodic_sketching_msgs.msg
-import ergodic_sketching_msgs.srv
+import rclpy
+from rclpy.action import ActionClient
+from rclpy.node import Node
+from ergodic_sketching_msgs.srv import Sketch
+from ergodic_sketching_msgs.action import Planner
+import rclpy.publisher
 from sensor_msgs.msg import JointState
-from cv_bridge import CvBridge
 from nav_msgs.msg import Path
-import trajectory_msgs.msg
+from rcl_interfaces.srv import GetParameters
+from cv_bridge import CvBridge
 
-class Planner:
-    def __init__(self, image: numpy.ndarray, log_dir: pathlib.Path, joint_state_pub) -> None:
+class Sketcher(Node):
+    def __init__(self, image: numpy.ndarray, log_dir: pathlib.Path, publish_js: bool):
+        super().__init__("drozbot_client")
+
         self._image = image
 
         self._stop_ctrl_thread_event = threading.Event()
         self._traj_queue = queue.Queue()
-        self._joint_state_pub = joint_state_pub
 
-        self._ctrl_thread = threading.Thread(target=self._ctrl_thread_cb)
-        self._ctrl_thread.start()
+        self._param_client = self.create_client(GetParameters, "/planner_action_server/get_parameters")
+        self._param_client.wait_for_service()
+        param_req = GetParameters.Request()
+        param_req.names=["joint_names"]
+        param_future = self._param_client.call_async(param_req)
+        rclpy.spin_until_future_complete(self,param_future)
+        param_res = param_future.result()
+        self._joint_names = param_res.values[0].string_array_value
 
-        self._client = actionlib.SimpleActionClient("/ilqr_planner_ros/plan",ergodic_sketching_msgs.msg.PlannerAction)
-        self._client.wait_for_server()
+        self._joint_state_pub = None
+        if publish_js:
+            self._joint_state_pub = self.create_publisher(JointState,"/rob_sim/joint_states",10)
+
+        self._path_pub= self.create_publisher(Path,"/rob_sim/path",10)
+        
+        self._sketch_client = self.create_client(Sketch,"/sketch")
+        self._sketch_client.wait_for_service()
+
+        self._ctrl_thread = threading.Thread(target=self._ctrl_thread_cb)        
+        self._client = ActionClient(self,Planner,"/plan")
+
         self._log_dir = log_dir
         self._traj = []
         self._commands = []
         self._costs = []
 
-    def start(self,path: Path)->None:
-        goal = ergodic_sketching_msgs.msg.PlannerGoal()
-        goal.path = path
-        self._client.send_goal(goal,feedback_cb=self._planner_feedback)
-        self._client.wait_for_result()
-        self._stop_ctrl_thread_event.set()
+    def publish_joint_state(self,q: numpy.ndarray):
+        msg = JointState()
+        msg.name = self._joint_names
+        msg.position = q
+        self._joint_state_pub.publish(msg)
 
+    def process(self):
+        bridge = CvBridge()
+        sketch_req = Sketch.Request()
+        sketch_req.drawing_zone_idx.data = 0
+        sketch_req.image = bridge.cv2_to_imgmsg(self._image,"bgr8")
+        sketch_future = self._sketch_client.call_async(sketch_req)
+        rclpy.spin_until_future_complete(self,sketch_future)
+        result = sketch_future.result()
+        self._path_pub.publish(result.path)
+        self._start_planner(result.path)
+
+    def _start_planner(self,path: Path)->None:
+        self._ctrl_thread.start()
+        goal = Planner.Goal()
+        goal.path = path
+        self._client.wait_for_server()
+        future = self._client.send_goal_async(goal,feedback_callback=self._planner_feedback)
+        future.add_done_callback(self.goal_response_callback)
+
+    def goal_response_callback(self, future):
+        goal_handle = future.result()
+        if not goal_handle.accepted:
+            self.get_logger().warning('Goal rejected')
+            return
+
+        self.get_logger().info('Goal accepted')
+
+        self._get_result_future = goal_handle.get_result_async()
+        self._get_result_future.add_done_callback(self.get_result_callback)
+    
+    def get_result_callback(self, future):
+        result = future.result().result
+        self._stop_ctrl_thread_event.set()
+        
         log_dir = self._log_dir / datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         log_dir.mkdir()
 
@@ -72,27 +122,27 @@ class Planner:
         cv2.imwrite(str(log_dir/"image.png"),self._image)
 
         self._ctrl_thread.join()
+        self.get_logger().info("Sketching over")
 
-
-    def _planner_feedback(self, feedback: trajectory_msgs.msg.JointTrajectory):
+    def _planner_feedback(self, feedback):
         traj = []
         cmd = []
-        for i,p in enumerate(feedback.traj.points): # Go through the received trajectory
+        for i,p in enumerate(feedback.feedback.traj.points): # Go through the received trajectory
             traj += [p.positions]
             cmd += [p.velocities]
 
         self._traj_queue.put(traj) # add trajectory in the queue. Other thread will process it
 
-        self._costs += [feedback.cost]
+        self._costs += [feedback.feedback.cost]
         self._traj += traj
         self._commands += cmd
 
     def _ctrl_thread_cb(self):
 
-        if self._joint_state_pub is None:
+        if self.publish_joint_state is None:
             return
 
-        rate = rospy.Rate(500)
+        rate = self.create_rate(500)
         while True:
             if self._stop_ctrl_thread_event.is_set() and self._traj_queue.empty():
                 return
@@ -100,19 +150,12 @@ class Planner:
             try:
                 traj = self._traj_queue.get()
                 for q in traj:
-                    self._joint_state_pub(q)
+                    self.publish_joint_state(q)
                     rate.sleep()
             except queue.Empty:
                 continue
 
-def drozbot()->None:
-
-    def _publish_joint_state(pub: rospy.Publisher,joint_names: list[str], q: numpy.ndarray) -> None:
-        msg = JointState()
-        msg.name = joint_names
-        msg.position = q
-        pub.publish(msg)
-
+def drozbot() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("-i","--image",dest="image_path", type=str, help="image file to draw")
     parser.add_argument("-l","--logdir",dest="log_dir",type=str,help="log dir")
@@ -130,35 +173,18 @@ def drozbot()->None:
     if not image_path.suffix.endswith((".jpg",".png",".jpeg")) and args.image_path != "random":
         raise Exception(f"provided image file \"{str(image_path)}\" is not in the expected format (jpg or png)!")
 
-    os.system(f"rosparam dump {str(log_path)}/ros_config.yaml")
-    rospy.init_node("drozbot")
-
-    publish_joint_state = None
-    if not args.no_publish:
-        joint_states_pub = rospy.Publisher("rob_sim/joint_states",JointState,queue_size=10)
-        joint_names = rospy.get_param("/ilqr_planner_ros/joint_names")
-        publish_joint_state = partial(_publish_joint_state,joint_states_pub,joint_names)
-
-    path_pub = rospy.Publisher("rob_sim/path",Path,queue_size=10)
-
-    sketch_srv = rospy.ServiceProxy("/ergodic_sketching_ros/sketch",ergodic_sketching_msgs.srv.sketch)
-
     if args.image_path.lower() != "random": # Generate a random noise image, used to test.
         image = cv2.imread(str(image_path))
     else:
         image = numpy.random.rand(930,640,3) * 255
         image = image.astype(numpy.uint8)
-
-    bridge = CvBridge()
-
-    req = ergodic_sketching_msgs.srv.sketchRequest()
-    req.drawing_zone_idx.data = 0
-    req.image = bridge.cv2_to_imgmsg(image,"bgr8")
-    resp = sketch_srv(req)
-    path_pub.publish(resp.path)
-
-    planner = Planner(image,log_path,publish_joint_state)
-    planner.start(resp.path)
+    
+    rclpy.init()
+    node = Sketcher(image,log_path,not args.no_publish)
+    node.process()
+    rclpy.spin(node)
+    node.destroy_node()
+    rclpy.shutdown()
 
 if __name__ == "__main__":
     drozbot()

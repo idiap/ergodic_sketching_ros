@@ -22,64 +22,80 @@ add_compile_options(
     "-pedantic"
     "-Wconversion"
     "-Werror=pedantic"
-    #"-O3"
+    "-O3"
 )
 
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
+find_package(rclcpp_components REQUIRED)
 find_package(ergodic_sketching REQUIRED)
 find_package(ilqr_planner REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(sackmesser REQUIRED)
-find_package(catkin REQUIRED COMPONENTS
-	roscpp
-    rospy
-    cv_bridge
-    actionlib
-    actionlib_msgs
-    ergodic_sketching_msgs
-)
-
-catkin_package(
-	LIBRARIES ${PROJECT_NAME}
-	INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/include
-	CATKIN_DEPENDS roscpp rospy message_runtime cv_bridge actionlib actionlib_msgs ergodic_sketching_msgs
-)
+find_package(cv_bridge REQUIRED)
+find_package(ergodic_sketching_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(trajectory_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 
 add_executable(ergodic_sketching_ros src/ergodic_sketching_ros.cpp)
-add_executable(ilqr_planner_ros src/ilqr_planner_ros.cpp src/Planner.cpp include/ergodic_sketching_ros/Planner.hpp)
 
 target_include_directories(ergodic_sketching_ros
-	PRIVATE
+	PUBLIC
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
-	SYSTEM PRIVATE
-		${catkin_INCLUDE_DIRS}
-	SYSTEM INTERFACE
-		$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+  PRIVATE
+    ${EIGEN3_INCLUDE_DIRS}
 )
 
-target_link_libraries(ergodic_sketching_ros  PUBLIC
-    ${catkin_LIBRARIES}
-    ergodic_sketching::ergodic_sketching
-    sackmesser::sackmesser
-    sackmesser::sackmesser_runtime
-    ${OpenCV_LIBRARIES}
-	Eigen3::Eigen
+ament_target_dependencies( ergodic_sketching_ros 
+    rclcpp
+    ergodic_sketching
+    sackmesser
+    OpenCV
+    Eigen3
+    cv_bridge
+    ergodic_sketching_msgs
+    nav_msgs
+    geometry_msgs
 )
 
+add_library(ilqr_planner_ros SHARED src/ilqr_planner_ros.cpp src/Planner.cpp include/ergodic_sketching_ros/Planner.hpp)
 target_include_directories(ilqr_planner_ros
 	PRIVATE
-		$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
-	SYSTEM PRIVATE
-		${catkin_INCLUDE_DIRS}
-	SYSTEM INTERFACE
-		$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
+  	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+  PRIVATE
+    ${EIGEN3_INCLUDE_DIRS}
 )
 
-target_link_libraries(ilqr_planner_ros  PUBLIC
-    ${catkin_LIBRARIES}
-	Eigen3::Eigen
-    ilqr_planner::ilqr_planner
+ament_target_dependencies( ilqr_planner_ros 
+    rclcpp
+    rclcpp_action
+    rclcpp_components
+    ilqr_planner
+    Eigen3
+    ergodic_sketching_msgs
+    trajectory_msgs
 )
 
-catkin_install_python(PROGRAMS scripts/ik_node.py scripts/ik_marker_node.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+rclcpp_components_register_node(ilqr_planner_ros PLUGIN "PlannerActionServer" EXECUTABLE planner_action_server)
+
+install(TARGETS ergodic_sketching_ros
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+install(TARGETS ilqr_planner_ros
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+install(DIRECTORY
+  launch config descriptions assets rviz
+  DESTINATION share/${PROJECT_NAME}/
+)
+
+ament_package()

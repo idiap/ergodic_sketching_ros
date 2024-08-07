@@ -18,6 +18,7 @@ if(NOT TARGET sackmesser::sackmesser)
     include("${sackmesser_CMAKE_DIR}/sackmesser-config-targets.cmake")
 else()
     set(BUILD_TARGET sackmesser::sackmesser)
+    set(sackmesser_LIBRARIES sackmesser::sackmesser sackmesser::sackmesser_runtime)
 
     get_target_property(TARGET_INCLUDE_DIRS ${BUILD_TARGET} INTERFACE_INCLUDE_DIRECTORIES)
     set(TARGET_INCLUDE_DIRS "${TARGET_INCLUDE_DIRS}" CACHE PATH "${BUILD_TARGET} include directories")
