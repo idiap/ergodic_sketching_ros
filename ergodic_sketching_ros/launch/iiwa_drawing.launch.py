@@ -1,3 +1,9 @@
+# SPDX-FileCopyrightText: 2023 Idiap Research Institute <contact@idiap.ch>
+#
+# SPDX-FileContributor: Jeremy Maceiras  <jeremy.maceiras@idiap.ch>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.conditions import IfCondition
@@ -25,7 +31,7 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             "drawing_frame_xyz",
-            default_value="0.6 0.15 0",
+            default_value="0.6 0.15 0.2",
             description="Drawing frame position",
         ),
         DeclareLaunchArgument(

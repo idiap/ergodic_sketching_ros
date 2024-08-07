@@ -15,7 +15,7 @@ Files: ergodic_sketching/.cppcheck-suppressions
 Copyright: Copyright © 2023 Idiap Research Institute <contact@idiap.ch>
 License: GPL-3.0-only
 
-Files: ergodic_sketching/assets/writing/*
+Files: ergodic_sketching_ros/assets/writing/*
 Copyright: Copyright © 2023 Idiap Research Institute <contact@idiap.ch>
 License: GPL-3.0-only
 
